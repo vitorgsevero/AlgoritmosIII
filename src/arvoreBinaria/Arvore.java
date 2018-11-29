@@ -18,6 +18,45 @@ public class Arvore {
 		this.esquerda = null;
 		//System.out.println("Criando a arvore com o elemento " + elemento.getValor());
 	}
+	
+	//removendo elementos
+	
+	public Arvore remover(Elemento elemento) {
+		//primeiro caso - achei o elemento raiz da arvore
+		if(this.elemento.getValor() == elemento.getValor()) {
+			//caso mais simples - elemento na folha, sem filhos
+			if(this.direita == null && this.esquerda == null) {
+				return null;
+			} // caso 02 - filhos a esquerda, mas sem filhos a direita
+			else {
+				if(this.esquerda != null && this.direita == null) {
+					return this.esquerda;
+				}// caso 03 - filhos a direita, mas sem filhos a esquerda
+				else if(this.direita != null && this.esquerda == null) {
+					return this.direita;	
+				}//caso 04 - filhos na direita e esquerda
+				else { //utilizando o maior dentro os menores para remover o primeiro elemento da arvore
+						Arvore aux = this.esquerda;
+						while(aux.direita != null) { //enquanto tiver filhos na direita
+							aux = aux.direita;
+						}//trocando os elementos da arvore 
+						this.elemento = aux.getElemento(); //nó atual recebe o elemento de aux
+						aux.setElemento(elemento);		//insiro o no folha no fim para que o elemento seja removido
+						this.esquerda = esquerda.remover(elemento);
+				}
+			}
+			
+		}else if(elemento.getValor() < this.elemento.getValor()) {
+			//passar a responsabilidade para a sub arvore da esquerda
+			this.esquerda = this.esquerda.remover(elemento);
+		}else if(elemento.getValor() > this.elemento.getValor()) {
+			//passar a responsabilidade para a sub arvore da direita
+			this.direita = this.direita.remover(elemento);
+		}
+		
+		return this;
+	}
+	
 
 	public boolean isEmpty() {
 		return (this.elemento == null);
